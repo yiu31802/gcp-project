@@ -4,3 +4,15 @@ mvn compile -e exec:java  -Dexec.mainClass=com.github.yiu31802.gcpproject.WriteT
 # Compile (`mvn test`) and execute a Test package
 mvn test -e exec:java  -Dexec.mainClass=com.github.yiu31802.gcpproject.WriteToDatastoreFromMemory -Dexec.classpathScope="test" -DXGCPID="myproject"
 
+# Run in the cloud
+export MAIN="com.github.yiu31802.gcpproject.WriteToDatastoreFromMemory"
+export BUCKET="myproject.appspot.com"
+export PROJECT="myproject"
+mvn test -e exec:java \
+-Dexec.classpathScope="test" \
+-DXGCPID="myproject" \
+-Dexec.mainClass=$MAIN \
+    -Dexec.args="--project=$PROJECT \
+    --stagingLocation=gs://$BUCKET/staging/ \
+    --tempLocation=gs://$BUCKET/staging/ \
+    --runner=DataflowRunner"
