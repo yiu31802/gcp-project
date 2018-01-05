@@ -1,6 +1,6 @@
 # Compile and execute a main package
 mvn compile -e exec:java  -Dexec.mainClass=com.github.yiu31802.gcpproject.WriteToDatastoreFromMemoryMain
 
-# Compile and execute a Test package
-mvn test -e exec:java  -Dexec.mainClass=com.github.yiu31802.gcpproject.WriteToDatastoreFromMemory -Dexec.classpathScope="test"
+# Compile (`mvn test`) and execute a Test package
+mvn test -e exec:java  -Dexec.mainClass=com.github.yiu31802.gcpproject.WriteToDatastoreFromMemory -Dexec.classpathScope="test" -DXGCPID="myproject"
 
