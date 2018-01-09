@@ -1,16 +1,10 @@
 package com.github.yiu31802.gcpproject;
 
-import static com.google.datastore.v1.client.DatastoreHelper.makeKey;
-import static com.google.datastore.v1.client.DatastoreHelper.makeValue;
-import com.google.datastore.v1.Entity;
-import com.google.datastore.v1.Key;
 import com.google.api.services.bigquery.model.TableFieldSchema;
 import com.google.api.services.bigquery.model.TableRow;
 import com.google.api.services.bigquery.model.TableSchema;
 import org.apache.beam.sdk.extensions.gcp.options.*;
 import org.apache.beam.sdk.Pipeline;
-import org.apache.beam.sdk.coders.StringUtf8Coder;
-import org.apache.beam.sdk.io.gcp.datastore.DatastoreIO;
 import org.apache.beam.sdk.io.gcp.bigquery.BigQueryIO;
 import org.apache.beam.sdk.options.PipelineOptions;
 import org.apache.beam.sdk.options.PipelineOptionsFactory;
@@ -52,11 +46,15 @@ public class WriteToBigqueryFromMemory {
         PipelineOptions options = PipelineOptionsFactory.fromArgs(args).withValidation().create();
         GcpOptions gOptions = options.as(GcpOptions.class);
         gOptions.setProject(project_id);
+        String gcp_temp = "gs://" + project_id + "/bigquery-tmp";
+        //gOptions.setGcpTempLocation(gcp_temp);
+        gOptions.setTempLocation(gcp_temp);
         Pipeline p = Pipeline.create(gOptions);
         List<Integer> ids = Arrays.asList(1, 2);
         PTransform<PCollection<TableRow>, ?> write =
                 BigQueryIO.<TableRow>write().
                     withFormatFunction(IDENTITY_FORMATTER).
+                    //withCustomGcsTempLocation(gcp_temp).
                     to("ds1.city").
                     withSchema(schema);
         p.
