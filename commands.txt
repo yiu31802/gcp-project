@@ -6,11 +6,12 @@ mvn test -e exec:java  -Dexec.mainClass=com.github.yiu31802.gcpproject.WriteToDa
 
 # Run in the cloud
 export MAIN="com.github.yiu31802.gcpproject.WriteToDatastoreFromMemory"
-export BUCKET="myproject.appspot.com"
 export PROJECT="myproject"
+export BUCKET="$PROJECT.appspot.com"
+
 mvn test -e exec:java \
 -Dexec.classpathScope="test" \
--DXGCPID="myproject" \
+-DXGCPID="$PROJECT" \
 -Dexec.mainClass=$MAIN \
     -Dexec.args="--project=$PROJECT \
     --stagingLocation=gs://$BUCKET/staging/ \
